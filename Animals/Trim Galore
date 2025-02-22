@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#SBATCH --partition=defq
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=100g
+#SBATCH --time=23:00:00
+#SBATCH --job-name=TG_animal
+#SBATCH --output=/share/BioinfMSc/Bill_resources/Tbrucei/fastq/Group4/TG_animal/logs/%x-%j.out
+#SBATCH --error=/share/BioinfMSc/Bill_resources/Tbrucei/fastq/Group4/TG_animal/logs/%x-%j.err
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=mbyle1@nottingham.ac.uk
+
+# Activate conda environment
+source $HOME/.bash_profile
+conda activate RNAseq
+
+# Path to our files
+file_dir=/share/BioinfMSc/Bill_resources/Tbrucei/fastq/Group4
+
+# Trim data
+trim_galore --quality 28 $file_dir/Animal*.fastq.gz
+
+# Deactivate conda environment
+conda deactivate
